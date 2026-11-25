@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El enigma de los 100.000 años · versión simple</title>
+<style>
+  :root { --cian:#3fd0ff; --ambar:#ffb454; --verde:#5fe3a1; --rojo:#ff6b6b; --texto:#e6f1fb; --suave:#9fb8cf; --panel:rgba(10,28,48,0.82); --borde:rgba(120,200,255,0.22); }
+  * { box-sizing:border-box; }
+  html,body { margin:0; }
+  body { font-family:"Segoe UI",system-ui,sans-serif; color:var(--texto); background:#06121f url(assets/glaciar_cabecera.jpg) center top/cover fixed; }
+  body::before { content:""; position:fixed; inset:0; background:linear-gradient(180deg,rgba(4,14,26,0.55),rgba(4,14,26,0.93) 38%); z-index:-1; }
+  .app { max-width:1560px; margin:0 auto; padding:18px 26px 22px; display:grid; gap:16px; grid-template-columns:1fr 370px; }
+  header { grid-column:1/-1; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+  h1 { margin:0; font-size:34px; letter-spacing:.5px; }
+  .sub { color:var(--suave); font-size:16px; margin-top:2px; }
+  .completo { color:var(--suave); font-size:14px; text-decoration:none; border:1px solid var(--borde); padding:8px 14px; border-radius:10px; white-space:nowrap; }
+  .completo:hover { color:var(--texto); border-color:var(--cian); }
+  .panel { background:var(--panel); border:1px solid var(--borde); border-radius:18px; padding:16px 20px; backdrop-filter:blur(6px); }
+  .izq { display:flex; flex-direction:column; gap:16px; min-width:0; }
+
+  /* --- planeta --- */
+  .planeta { display:grid; grid-template-columns:minmax(280px,42%) 1fr; gap:10px; align-items:center; min-height:330px; }
+  .globo { position:relative; height:320px; }
+  .tiempo .et { font-size:13px; letter-spacing:3px; color:var(--suave); }
+  .tiempo .hace { font-size:50px; font-weight:700; line-height:1.1; margin:4px 0 10px; }
+  .estado { display:inline-block; font-size:17px; font-weight:700; padding:6px 16px; border-radius:20px; border:1px solid currentColor; }
+  .lect { display:grid; grid-template-columns:1fr 1fr; gap:14px 22px; margin-top:18px; }
+  .lect div { border-left:3px solid var(--borde); padding-left:12px; }
+  .lect span { display:block; font-size:14px; color:var(--suave); }
+  .lect b { font-size:32px; font-weight:700; }
+  .lect small { font-size:15px; color:var(--suave); font-weight:500; }
+
+  /* --- gráfica --- */
+  .grafica { display:flex; flex-direction:column; }
+  .grafica .tit { display:flex; justify-content:space-between; align-items:center; font-size:17px; font-weight:600; margin-bottom:6px; flex-wrap:wrap; gap:10px; }
+  .ley { display:flex; gap:20px; font-size:15px; font-weight:500; color:var(--suave); }
+  .ley i { display:inline-block; width:24px; height:4px; border-radius:2px; vertical-align:middle; margin-right:7px; }
+  .zona { position:relative; height:270px; cursor:crosshair; }
+  canvas { position:absolute; inset:0; width:100%; height:100%; }
+  .marca { position:absolute; left:60px; font-size:12.5px; color:var(--suave); pointer-events:none; }
+  .marca.arr { top:12px; } .marca.aba { bottom:42px; }
+  .barra { display:flex; align-items:center; gap:14px; margin-top:8px; }
+  .play { width:48px; height:42px; border-radius:12px; border:none; background:var(--cian); color:#04121f; font-size:20px; font-weight:700; cursor:pointer; }
+  .barra input { flex:1; accent-color:var(--cian); height:6px; cursor:pointer; }
+  .barra .t { font-size:15px; color:var(--suave); min-width:90px; }
+  .pista { font-size:13px; color:var(--suave); margin-top:4px; }
+
+  /* --- lado derecho --- */
+  .lado { display:flex; flex-direction:column; gap:14px; }
+  .boton { width:100%; text-align:left; border:2px solid var(--borde); background:rgba(10,28,48,0.9); color:var(--texto); border-radius:16px; padding:14px 16px; cursor:pointer; font:inherit; display:flex; gap:12px; align-items:center; transition:.15s; }
+  .boton:hover { border-color:var(--cian); }
+  .boton .ico { font-size:32px; width:42px; text-align:center; }
+  .boton b { display:block; font-size:19px; }
+  .boton span { font-size:14px; color:var(--suave); }
+  .boton .est { margin-left:auto; font-size:13px; font-weight:700; padding:6px 11px; border-radius:20px; background:rgba(95,227,161,0.15); color:var(--verde); white-space:nowrap; }
+  .boton.off { border-color:rgba(255,107,107,0.55); }
+  .boton.off .est { background:rgba(255,107,107,0.15); color:var(--rojo); }
+  .restaurar { background:none; border:1px solid var(--borde); color:var(--suave); border-radius:12px; padding:9px; font:inherit; font-size:14px; cursor:pointer; }
+  .restaurar:hover { color:var(--texto); border-color:var(--cian); }
+  .num { text-align:center; padding:12px 16px; }
+  .num .et { font-size:15px; color:var(--suave); }
+  .num .val { font-size:52px; font-weight:700; line-height:1.1; margin:2px 0; }
+  .num .ver { font-size:15px; font-weight:600; }
+  .ok { color:var(--verde); } .medio { color:var(--ambar); } .mal { color:var(--rojo); }
+  .explica { font-size:18px; line-height:1.45; display:flex; gap:12px; align-items:flex-start; }
+  .explica .ico { font-size:32px; }
+  @media (max-width:1100px) { .app { grid-template-columns:1fr; } .planeta { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div>
+      <h1>El enigma de los 100.000 años</h1>
+      <div class="sub">¿Qué hace falta para que el modelo copie al hielo real?</div>
+    </div>
+    <a class="completo" href="index.html">Ver laboratorio completo →</a>
+  </header>
+
+  <div class="izq">
+    <section class="panel planeta">
+      <div class="globo"><canvas id="cvGlobo"></canvas></div>
+      <div class="tiempo">
+        <div class="et">VIAJE EN EL TIEMPO</div>
+        <div class="hace" id="lHace">Hace 20.000 años</div>
+        <span class="estado" id="lEstado">● Glacial</span>
+        <div class="lect">
+          <div><span>Hielo · nuestro modelo</span><b id="lMod" style="color:var(--cian)">—</b></div>
+          <div><span>Hielo · dato real</span><b id="lObs">—</b></div>
+          <div><span>Luz del Sol en verano</span><b id="lIns" style="color:var(--ambar)">—</b></div>
+          <div><span>Nivel del mar (vs. hoy)</span><b id="lMar">—</b></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel grafica">
+      <div class="tit">
+        <span>El hielo de la Tierra en el último millón de años</span>
+        <span class="ley"><span><i style="background:#ffffff"></i>Datos reales (LR04)</span><span><i style="background:var(--cian)"></i>Nuestro modelo</span></span>
+      </div>
+      <div class="zona" id="zona">
+        <canvas id="cv"></canvas>
+        <div class="marca arr">↑ poco hielo (cálido)</div>
+        <div class="marca aba">↓ mucho hielo (glaciación)</div>
+      </div>
+      <div class="barra">
+        <button class="play" id="bPlay" title="Reproducir (barra espaciadora)">▶</button>
+        <input type="range" id="slT" min="-1100" max="0" step="0.5" value="-20">
+        <div class="t" id="lT">−20 mil años</div>
+      </div>
+      <div class="pista">Haz clic en la gráfica o arrastra la barra para viajar a cualquier época.</div>
+    </section>
+  </div>
+
+  <aside class="lado">
+    <button class="boton" id="bSol">
+      <div class="ico">☀️</div>
+      <div><b>El Sol</b><span>la luz que llega en verano</span></div>
+      <div class="est" id="eSol">ENCENDIDO</div>
+    </button>
+    <button class="boton" id="bReloj">
+      <div class="ico">⏱️</div>
+      <div><b>Reloj interno</b><span>el empuje κ del clima</span></div>
+      <div class="est" id="eReloj">ENCENDIDO</div>
+    </button>
+    <button class="restaurar" id="bRest">↺ Volver a encender los dos</button>
+
+    <div class="panel num">
+      <div class="et">Ritmo de las glaciaciones</div>
+      <div class="val" id="vRitmo">—</div>
+      <div class="ver" id="tRitmo"></div>
+    </div>
+    <div class="panel num">
+      <div class="et">¿Cuánto se parece a lo real?</div>
+      <div class="val" id="vCorr">—</div>
+      <div class="ver" id="tCorr"></div>
+    </div>
+    <section class="panel explica">
+      <div class="ico" id="xIco">✅</div>
+      <div id="xTxt"></div>
+    </section>
+  </aside>
+</div>
+
+<script src="js/datos.js"></script>
+<script src="js/modelo.js"></script>
+<script src="js/analisis.js"></script>
+<script src="js/graficos.js"></script>
+<script>
+'use strict';
+const M = window.Modelo, An = window.Analisis, P0 = M.PARAMS_ARTICULO;
+const $ = id => document.getElementById(id);
+const T = Array.from({ length: 1101 }, (_, j) => -1100 + j);
+const OBS = T.map(t => M.LR04.en('tuned', t));
+const est = { sol: true, reloj: true, t: -20, play: false };
+let sim = [], ejes = null;
+
+const TEXTOS = {
+  'true,true':   ['✅', 'Con <b>el Sol</b> y <b>el reloj interno</b> juntos, el modelo copia al hielo real: glaciaciones cada ~100 mil años y en el momento justo.'],
+  'false,true':  ['🕰️', 'Sin el Sol, el clima <b>sigue oscilando solo</b> cada ~92 mil años… pero <b>a destiempo</b>: las glaciaciones caen en fechas equivocadas.'],
+  'true,false':  ['☀️', 'Sin reloj interno, el hielo solo <b>copia al Sol</b>: sube y baja cada ~41 mil años. <b>Desaparecen los ciclos de 100 mil.</b>'],
+  'false,false': ['❄️', 'Sin Sol y sin reloj interno, el clima <b>se queda quieto</b>. No hay glaciaciones.']
+};
+
+const enT = (arr, t) => { const u = t + 1100, j = Math.max(0, Math.min(1099, Math.floor(u))), f = u - j; return arr[j] + f * (arr[j + 1] - arr[j]); };
+const hieloRelativo = d => Math.min(1, Math.max(0, (d - 3.25) / (5.0 - 3.25)));
+const fmtAnios = t => (Math.round(Math.abs(t) * 1000) + 0).toLocaleString('es-BO');
+
+/* ---------- modelo y números ---------- */
+function calcular() {
+  const p = Object.assign({}, P0, { kappa: est.reloj ? P0.kappa : 0 });
+  sim = Array.from(M.simularRapido({ p, forz: est.sol ? 'real' : 'cero' }));
+  const m = sim.slice(100), o = OBS.slice(100);
+  const varia = Math.max(...m) - Math.min(...m) > 0.05;
+  const per = varia ? An.periodoDominante(m) : NaN, c = varia ? An.pearson(m, o) : NaN;
+
+  if (isFinite(per)) {
+    $('vRitmo').innerHTML = Math.round(per) + '<span style="font-size:22px"> mil años</span>';
+    const bien = per >= 80 && per <= 125;
+    $('vRitmo').className = 'val ' + (bien ? 'ok' : 'mal'); $('tRitmo').className = 'ver ' + (bien ? 'ok' : 'mal');
+    $('tRitmo').textContent = bien ? '✔ Cerca de 100 mil, como en la realidad' : '✘ No son 100 mil años';
+  } else {
+    $('vRitmo').textContent = '—'; $('vRitmo').className = 'val mal';
+    $('tRitmo').className = 'ver mal'; $('tRitmo').textContent = '✘ No hay ciclos';
+  }
+  if (isFinite(c)) {
+    $('vCorr').textContent = Math.round(c * 100) + ' %';
+    const cl = c >= 0.8 ? 'ok' : c >= 0.4 ? 'medio' : 'mal';
+    $('vCorr').className = 'val ' + cl; $('tCorr').className = 'ver ' + cl;
+    $('tCorr').textContent = c >= 0.8 ? '✔ Casi igual a los datos reales' : c >= 0.4 ? '≈ Se parece a medias' : '✘ No coincide con lo real';
+  } else {
+    $('vCorr').textContent = '—'; $('vCorr').className = 'val mal';
+    $('tCorr').className = 'ver mal'; $('tCorr').textContent = '✘ No coincide con lo real';
+  }
+  const [ico, txt] = TEXTOS[est.sol + ',' + est.reloj];
+  $('xIco').textContent = ico; $('xTxt').innerHTML = txt;
+  for (const [b, e, on] of [['bSol', 'eSol', est.sol], ['bReloj', 'eReloj', est.reloj]]) {
+    $(b).classList.toggle('off', !on); $(e).textContent = on ? 'ENCENDIDO' : 'APAGADO';
+  }
+  dibujarTodo();
+}
+
+/* ---------- lecturas de la fecha elegida ---------- */
+function lecturas() {
+  const t = est.t, d = enT(sim, t), o = enT(OBS, t), F = M.Forzamiento.F('real', t), g = hieloRelativo(d);
+  $('lHace').textContent = t >= -0.25 ? 'Hoy' : 'Hace ' + fmtAnios(t) + ' años';
+  $('lT').textContent = t >= -0.25 ? 'hoy' : '−' + Math.round(-t) + ' mil años';
+  $('lMod').innerHTML = d.toFixed(2) + '<small> ‰</small>';
+  $('lObs').innerHTML = o.toFixed(2) + '<small> ‰</small>';
+  $('lIns').innerHTML = F.toFixed(0) + '<small> W/m²</small>';
+  $('lMar').innerHTML = (g < 0.03 ? '0' : '−' + Math.round(120 * g)) + '<small> m</small>';
+  const e = d > 4.45 ? ['Glacial', '#d9f3ff'] : d < 3.75 ? ['Interglacial', 'var(--verde)']
+          : (enT(sim, Math.min(0, t + 2)) < d ? ['Deshielo', 'var(--ambar)'] : ['Enfriamiento', 'var(--cian)']);
+  $('lEstado').textContent = '● ' + e[0]; $('lEstado').style.color = e[1];
+}
+
+/* ---------- gráfica ---------- */
+function dibujarGrafica() {
+  ejes = Graf.linea($('cv'), {
+    series: [{ x: T, y: OBS, color: 'rgba(255,255,255,0.85)', ancho: 1.3 },
+             { x: T, y: sim, color: '#3fd0ff', ancho: 2.4, brillo: true }],
+    xlim: [-1100, 0], ylim: [2.9, 5.4], invertirY: true, cursorX: est.t,
+    yLabel: 'Hielo (δ¹⁸O)', xLabel: 'Miles de años atrás',
+    fmtX: v => v === 0 ? 'hoy' : String(Math.abs(Math.round(v))),
+    margen: { l: 56, t: 8, b: 34 }
+  });
+}
+
+/* ---------- globo polar ---------- */
+const IMG_TIERRA = Object.assign(new Image(), { src: 'assets/tierra_polar.jpg' });
+IMG_TIERRA.onload = () => dibujarGlobo();
+const CAPAS = [
+  { n: 'Laurentino',   x: -0.40, y: 0.30, rmax: 0.33, g0: 0.10, rot: { dx: -1.02, dy: 0.62 } },
+  { n: 'Cordillerano', x: -0.52, y: -0.18, rmax: 0.17, g0: 0.35, rot: { dx: -1.05, dy: -0.52 } },
+  { n: 'Fenoscandia',  x: 0.56, y: 0.24, rmax: 0.21, g0: 0.22, rot: { dx: 0.92, dy: -0.78 } },
+  { n: 'Groenlandia',  x: 0.07, y: 0.27, rmax: 0.08, g0: 0.0,  rot: { dx: 0.92, dy: 0.80 } },
+  { n: '', x: 0.33, y: -0.20, rmax: 0.16, g0: 0.40 },
+  { n: '', x: 0.50, y: 0.58, rmax: 0.07, g0: 0.50 }
+];
+function dibujarGlobo() {
+  if (!sim.length) return;
+  const { ctx, w, h } = Graf.preparar($('cvGlobo'));
+  const R = Math.min(h * 0.40, w * 0.30), cx = w * 0.52, cy = h * 0.52;
+  const d = enT(sim, est.t), g = hieloRelativo(d), F = M.Forzamiento.F('real', est.t);
+  const calor = Math.min(1, Math.max(0, (F - 430) / 140));
+  ctx.strokeStyle = `rgba(${90 + 140 * calor},${200 - 20 * calor},${255 - 150 * calor},0.35)`; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.arc(cx, cy, R * 1.12, 0, 7); ctx.stroke();
+  const at = ctx.createRadialGradient(cx, cy, R * 0.94, cx, cy, R * 1.16);
+  at.addColorStop(0, 'rgba(80,200,255,0.85)'); at.addColorStop(0.3, 'rgba(60,170,255,0.30)'); at.addColorStop(1, 'rgba(40,140,255,0)');
+  ctx.fillStyle = at; ctx.beginPath(); ctx.arc(cx, cy, R * 1.16, 0, 7); ctx.fill();
+  ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.clip();
+  if (IMG_TIERRA.complete && IMG_TIERRA.naturalWidth) { const k = R / 0.485; ctx.drawImage(IMG_TIERRA, cx - k * 0.5, cy - k * 0.5, k, k); }
+  else { ctx.fillStyle = '#0b3354'; ctx.fillRect(cx - R, cy - R, 2 * R, 2 * R); }
+  const rMar = R * (0.18 + 0.2 * g), hm = ctx.createRadialGradient(cx, cy - R * 0.08, 0, cx, cy - R * 0.08, rMar);
+  hm.addColorStop(0, `rgba(235,248,255,${0.25 + 0.5 * g})`); hm.addColorStop(1, 'rgba(235,248,255,0)');
+  ctx.fillStyle = hm; ctx.beginPath(); ctx.arc(cx, cy - R * 0.08, rMar, 0, 7); ctx.fill();
+  CAPAS.forEach((c, k) => {
+    const s = c.rmax * Math.max(0, (g - c.g0) / (1 - c.g0)) ** 0.75; if (s < 0.01) return;
+    const x = cx + c.x * R, y = cy + c.y * R, rp = s * R; ctx.beginPath();
+    for (let i = 0; i <= 72; i++) {
+      const a = i / 72 * 2 * Math.PI, ru = 1 + 0.12 * Math.sin(3 * a + k) + 0.07 * Math.sin(7 * a + 2 * k) + 0.04 * Math.sin(13 * a + k);
+      const px = x + rp * ru * Math.cos(a), py = y + rp * ru * Math.sin(a); i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+    }
+    const gr = ctx.createRadialGradient(x, y, 0, x, y, rp * 1.12);
+    gr.addColorStop(0, 'rgba(250,253,255,0.92)'); gr.addColorStop(0.55, 'rgba(232,246,255,0.78)'); gr.addColorStop(0.9, 'rgba(210,236,252,0.35)'); gr.addColorStop(1, 'rgba(210,236,252,0)');
+    ctx.fillStyle = gr; ctx.fill();
+  });
+  const sh = ctx.createRadialGradient(cx - R * 0.35, cy - R * 0.4, R * 0.3, cx, cy, R);
+  sh.addColorStop(0, 'rgba(255,255,255,0.06)'); sh.addColorStop(0.75, 'rgba(0,0,0,0)'); sh.addColorStop(1, 'rgba(0,10,30,0.45)');
+  ctx.fillStyle = sh; ctx.fillRect(cx - R, cy - R, 2 * R, 2 * R);
+  ctx.restore();
+  ctx.strokeStyle = 'rgba(120,220,255,0.95)'; ctx.lineWidth = 2; ctx.shadowColor = '#3fd0ff'; ctx.shadowBlur = 18;
+  ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.stroke(); ctx.shadowBlur = 0;
+  ctx.font = '11.5px "Segoe UI", sans-serif'; ctx.fillStyle = 'rgba(214,232,248,0.85)'; ctx.textAlign = 'center';
+  ctx.fillText('Polo Norte', cx, cy - R * 1.12 - 6);
+  CAPAS.filter(c => c.n).forEach(c => {
+    const x = cx + c.x * R, y = cy + c.y * R, lx = cx + c.rot.dx * R, ly = cy + c.rot.dy * R, izq = c.rot.dx < 0;
+    ctx.strokeStyle = 'rgba(230,244,255,0.75)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(lx, ly); ctx.lineTo(lx + (izq ? -62 : 62), ly); ctx.stroke();
+    ctx.fillStyle = '#3fd0ff'; ctx.beginPath(); ctx.arc(x, y, 3.5, 0, 7); ctx.fill();
+    ctx.font = '600 12.5px "Segoe UI", sans-serif'; ctx.fillStyle = '#fff'; ctx.textAlign = izq ? 'right' : 'left';
+    ctx.fillText(c.n, izq ? lx - 6 : lx + 6, ly - 5);
+  });
+}
+
+function dibujarTodo() { dibujarGrafica(); dibujarGlobo(); lecturas(); }
+
+/* ---------- tiempo ---------- */
+function fijarTiempo(t) {
+  est.t = Math.max(-1100, Math.min(0, t));
+  $('slT').value = est.t; dibujarTodo();
+}
+function alternarPlay() {
+  if (!est.play && est.t >= 0) fijarTiempo(-1100);
+  est.play = !est.play; $('bPlay').textContent = est.play ? '❚❚' : '▶';
+}
+function bucle() {
+  if (est.play) { fijarTiempo(est.t + 1); if (est.t >= 0) alternarPlay(); }
+  requestAnimationFrame(bucle);
+}
+$('slT').oninput = e => fijarTiempo(+e.target.value);
+$('bPlay').onclick = alternarPlay;
+$('zona').addEventListener('click', ev => {
+  if (!ejes) return;
+  const rc = $('cv').getBoundingClientRect(), px = ev.clientX - rc.left;
+  fijarTiempo(-1100 + (px - ejes.m.l) / ejes.pw * 1100);
+});
+document.addEventListener('keydown', e => { if (e.code === 'Space') { e.preventDefault(); alternarPlay(); } });
+
+$('bSol').onclick = () => { est.sol = !est.sol; calcular(); };
+$('bReloj').onclick = () => { est.reloj = !est.reloj; calcular(); };
+$('bRest').onclick = () => { est.sol = true; est.reloj = true; calcular(); };
+window.addEventListener('resize', dibujarTodo);
+
+const q = new URLSearchParams(location.search);
+if (q.get('sol') === '0') est.sol = false;
+if (q.get('reloj') === '0') est.reloj = false;
+if (q.get('t')) est.t = +q.get('t');
+$('slT').value = est.t;
+calcular();
+requestAnimationFrame(bucle);
+</script>
+</body>
+</html>

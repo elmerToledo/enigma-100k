@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El enigma de los 100.000 años — Laboratorio de ciclos glaciales</title>
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+<!-- Íconos (sprite SVG) -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <symbol id="i-globo" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18M5 7h14M5 17h14"/></symbol>
+    <symbol id="i-orbita" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><ellipse cx="12" cy="12" rx="10" ry="5.5" transform="rotate(-25 12 12)"/><circle cx="20" cy="7.5" r="1.6"/></symbol>
+    <symbol id="i-pulso" viewBox="0 0 24 24"><path d="M2 12h4l2.5-6 4 13 3-9 2 2H22"/></symbol>
+    <symbol id="i-grilla" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+    <symbol id="i-calc" viewBox="0 0 24 24"><rect x="5" y="2.5" width="14" height="19" rx="2"/><rect x="8" y="5.5" width="8" height="4" rx=".6"/><path d="M8.5 13h1M12 13h1M15 13h1M8.5 16.5h1M12 16.5h1M15 16.5h1"/></symbol>
+    <symbol id="i-matraz" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6L4.5 19a1.5 1.5 0 0 0 1.3 2.2h12.4a1.5 1.5 0 0 0 1.3-2.2L14 9V3M7.5 14h9"/></symbol>
+    <symbol id="i-copo" viewBox="0 0 24 24"><path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M9 4l3 2 3-2M9 20l3-2 3 2"/></symbol>
+    <symbol id="i-sol" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3M4.6 4.6l2.1 2.1M17.3 17.3l2.1 2.1M4.6 19.4l2.1-2.1M17.3 6.7l2.1-2.1"/></symbol>
+    <symbol id="i-olas" viewBox="0 0 24 24"><path d="M2 8c2.5-2 4.5-2 7 0s4.5 2 7 0 4.5-2 6 0M2 13c2.5-2 4.5-2 7 0s4.5 2 7 0 4.5-2 6 0M2 18c2.5-2 4.5-2 7 0s4.5 2 7 0 4.5-2 6 0"/></symbol>
+    <symbol id="i-barras" viewBox="0 0 24 24"><path d="M4 20V11M9.5 20V5M15 20v-7M20.5 20V8"/></symbol>
+    <symbol id="i-capas" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5 9-5zM3 13l9 5 9-5M3 17.5l9 5 9-5"/></symbol>
+    <symbol id="i-escudo" viewBox="0 0 24 24"><path d="M12 2.5l8 3v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10v-6l8-3z"/><path d="M12 8v6M9 11h6"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 11v6M12 7.5v.5"/></symbol>
+    <symbol id="i-reloj" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5"/><path d="M12 6.5V12l3.5 2.5"/></symbol>
+    <symbol id="i-enlace" viewBox="0 0 24 24"><path d="M10 14a4.5 4.5 0 0 0 6.4 0l3.2-3.2a4.5 4.5 0 0 0-6.4-6.4L12 5.6M14 10a4.5 4.5 0 0 0-6.4 0l-3.2 3.2a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2"/></symbol>
+    <symbol id="i-montana" viewBox="0 0 24 24"><path d="M2 20l7-12 4 6 3-4 6 10H2z"/><path d="M7.4 11l1.6 1.4 1.6-1.4"/></symbol>
+    <symbol id="i-engranaje" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></symbol>
+    <symbol id="i-ampliar" viewBox="0 0 24 24"><path d="M14 4h6v6M10 20H4v-6M20 4l-7 7M4 20l7-7"/></symbol>
+    <symbol id="i-espiral" viewBox="0 0 24 24"><path d="M12 12a1.5 1.5 0 1 1 1.5 1.5A3 3 0 1 1 15 9a4.5 4.5 0 1 1-6 6 6 6 0 1 1 9-9"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-pausa" viewBox="0 0 24 24"><path d="M7 4.5h3.5v15H7zM13.5 4.5H17v15h-3.5z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-reiniciar" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4.5h4.5"/></symbol>
+    <symbol id="i-termo" viewBox="0 0 24 24"><rect x="8" y="2.5" width="8" height="19" rx="4"/><path d="M10.5 7h3M10.5 11h3"/></symbol>
+    <symbol id="i-inicio" viewBox="0 0 24 24"><path d="M6 5v14M18 5L9 12l9 7z"/></symbol>
+  </defs>
+</svg>
+
+<header id="cabecera">
+  <div class="cab-contenido">
+    <div class="marca">
+      <div class="logo"><svg><use href="#i-espiral"/></svg></div>
+      <div>
+        <div class="titulo">El enigma de los 100.000 años</div>
+        <div class="sub">LABORATORIO DE CICLOS GLACIALES · PLEISTOCENO</div>
+      </div>
+    </div>
+    <div class="acciones">
+      <span class="insignia"><i></i>Datos reales</span>
+      <button id="btnPresentacion" class="boton-borde"><svg><use href="#i-ampliar"/></svg>Modo presentación</button>
+    </div>
+  </div>
+  <nav id="pestanas">
+    <button data-p="planeta" class="activa"><em>01</em><svg><use href="#i-globo"/></svg>El planeta</button>
+    <button data-p="orbita"><em>02</em><svg><use href="#i-orbita"/></svg>La órbita</button>
+    <button data-p="reloj"><em>03</em><svg><use href="#i-pulso"/></svg>El reloj interno</button>
+    <button data-p="mapa"><em>04</em><svg><use href="#i-grilla"/></svg>Sincronización</button>
+    <button data-p="metodos"><em>05</em><svg><use href="#i-calc"/></svg>Métodos numéricos</button>
+    <span class="estado-motor"><i></i>MOTOR VALIDADO</span>
+  </nav>
+</header>
+
+<main>
+<!-- ============================================================ 1. EL PLANETA -->
+<section id="planeta" class="pantalla activa">
+  <div class="g-planeta">
+    <div class="globo-zona">
+      <div class="enc-mini"><h1>El planeta</h1><p>Un millón de años de hielo,<br>una historia por descubrir.</p></div>
+      <canvas id="cvGlobo"></canvas>
+      <div class="nota-mini">PROYECCIÓN POLAR · CAPAS DE HIELO ILUSTRATIVAS</div>
+    </div>
+    <div class="panel tiempo">
+      <div class="tiempo-cab"><span class="rotulo">TIEMPO GEOLÓGICO</span><span class="miga">PLEISTOCENO <span>›</span> <b>01 / 05</b></span></div>
+      <div class="tiempo-grande">Hace <span id="lecEdad">20.000</span> años</div>
+      <div class="pildoras"><span id="lecEstado" class="pildora">—</span><span class="rotulo chico">HEMISFERIO NORTE</span></div>
+      <div class="lecturas">
+        <div class="lectura"><div class="ico"><svg><use href="#i-copo"/></svg></div><div><span>δ¹⁸O – modelo</span><b class="cian" id="lecMod">—</b></div></div>
+        <div class="lectura"><div class="ico"><svg><use href="#i-matraz"/></svg></div><div><span>δ¹⁸O – registro LR04</span><b id="lecObs">—</b></div></div>
+        <div class="lectura"><div class="ico sol"><svg><use href="#i-sol"/></svg></div><div><span>Insolación · 65°N</span><b class="ambar" id="lecIns">—</b></div></div>
+        <div class="lectura"><div class="ico"><svg><use href="#i-olas"/></svg></div><div><span>Nivel del mar aproximado</span><b id="lecMar">—</b></div></div>
+      </div>
+    </div>
+    <div class="panel experimento">
+      <h3 class="titulo-panel"><svg><use href="#i-matraz"/></svg>Panel de experimento</h3>
+      <label class="campo">Forzamiento orbital
+        <select id="selForz">
+          <option value="real">Completo · insolación real</option>
+          <option value="cero">Ninguno · I(t) = 0</option>
+          <option value="sinPrecesion">Sin precesión (e = 0)</option>
+          <option value="sinOblicuidad">Sin variación de oblicuidad</option>
+        </select></label>
+      <label class="campo"><span>Amplitud de forzamiento - A <b id="vA">1.00</b></span><input type="range" id="slA" min="0" max="2" step="0.01" value="1"><small><i>0</i><i>2</i></small></label>
+      <label class="campo"><span>Escala de tiempo - r <b id="vR">1.00</b></span><input type="range" id="slR" min="0.3" max="2" step="0.01" value="1"><small><i>0.3</i><i>2</i></small></label>
+      <div class="campo">Referencia LR04 - observada
+        <div class="segmentado" id="segLR"><button data-v="tuned" class="activo">Con ajuste</button><button data-v="untuned">Sin ajuste</button></div>
+      </div>
+      <button id="btnArticulo" class="boton-borde ancho"><svg><use href="#i-reiniciar"/></svg>Valores del artículo</button>
+      <p class="nota"><svg><use href="#i-info"/></svg>Insolación La2004 y registro LR04 reales. Con A = 1 y r = 1 es el modelo publicado.</p>
+    </div>
+    <div class="panel registro">
+      <div class="panel-cab"><h2><svg><use href="#i-termo"/></svg>El registro del hielo · últimos 1.100 kyr</h2>
+        <div class="leyenda"><span><i class="cian"></i>Modelo</span><span><i class="blanco"></i>Registro LR04</span><span>↑ CÁLIDO · ↓ FRÍO</span></div></div>
+      <canvas id="cvSerie"></canvas>
+      <div class="reproductor">
+        <button id="btnInicio" class="boton-icono" title="Volver al inicio"><svg><use href="#i-inicio"/></svg></button>
+        <button id="btnPlay" class="boton-play" title="Reproducir (barra espaciadora)"><svg><use href="#i-play"/></svg></button>
+        <span id="lecT" class="t-actual">−1100 kyr</span>
+        <input type="range" id="slTiempo" min="-1100" max="0" step="0.5" value="-1100">
+        <span class="t-actual hoy">HOY</span>
+        <select id="selVel"><option value="0.5">0.5×</option><option value="1.5" selected>1×</option><option value="4">3×</option></select>
+      </div>
+    </div>
+    <div class="fila3">
+    <div class="panel huella">
+      <h2><svg><use href="#i-capas"/></svg>Huella del modelo</h2>
+      <div class="metricas">
+        <div><span>Correlación con LR04</span><b class="cian" id="mR">—</b><small>Coeficiente de Pearson</small></div>
+        <div><span>Error cuadrático medio</span><b id="mRMSE">—</b><small>RMSE - δ¹⁸O</small></div>
+        <div><span>Período dominante - modelo</span><b id="mPm">—</b><small>últimos 1.000 kyr</small></div>
+        <div><span>Período dominante - LR04</span><b id="mPo">—</b><small>últimos 1.000 kyr</small></div>
+      </div>
+    </div>
+    <div class="panel ritmo">
+      <h2><svg><use href="#i-barras"/></svg>El ritmo del hielo - espectro de Fourier</h2>
+      <canvas id="cvEspectro"></canvas>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 2. LA ÓRBITA -->
+<section id="orbita" class="pantalla">
+  <div class="enc-pantalla">
+    <div><h1>La órbita</h1><p>Tres ciclos astronómicos. Un forzamiento que nunca se detiene.</p></div>
+    <div class="miga">PLEISTOCENO <span>›</span> <b>02 / 05</b></div>
+  </div>
+  <div class="g-orbita">
+    <div class="panel ciclos">
+      <h2><svg><use href="#i-orbita"/></svg>Los ciclos de Milankovitch</h2>
+      <div class="ciclo"><canvas id="cvMiniEcc"></canvas><div><h3>Excentricidad</h3><b class="cian">~100.000 y 405.000 años</b><p>Cambia la forma de la órbita. Ahora: <span id="oE">—</span></p></div></div>
+      <div class="ciclo"><canvas id="cvMiniObl"></canvas><div><h3>Oblicuidad</h3><b class="cian">~41.000 años</b><p>Inclinación del eje, entre 22,1° y 24,5°. Ahora: <span id="oEps">—</span></p></div></div>
+      <div class="ciclo"><canvas id="cvMiniPrec"></canvas><div><h3>Precesión</h3><b class="cian">~19.000–23.000 años</b><p>Decide en qué estación estamos más cerca del Sol. ϖ = <span id="oVarpi">—</span></p></div></div>
+    </div>
+    <div class="orbita-zona"><canvas id="cvOrbita"></canvas></div>
+    <div class="panel paradoja">
+      <span class="rotulo">LA PARADOJA</span>
+      <h2 class="titular">La órbita empuja.<br>El hielo decide.</h2>
+      <p>El forzamiento oscila cada 23 y 41 mil años, pero las grandes glaciaciones responden aproximadamente cada 100 mil años.</p>
+      <div class="formula">23 + 41 ≠ 100 kyr</div>
+      <p class="tenue">La insolación casi no tiene potencia en 100 kyr: la excentricidad solo modula la amplitud de la precesión. La dinámica no lineal y la sincronización ofrecen una posible explicación.</p>
+      <div class="dato-orbita"><span>Hace <b id="oEdad">—</b> años</span><span>F 65°N · 21 jun <b class="ambar" id="oF">—</b></span></div>
+    </div>
+    <div class="panel senal">
+      <div class="panel-cab"><h2><svg><use href="#i-pulso"/></svg>La señal orbital · 65° N</h2>
+        <div class="segmentado chico" id="segSenal"><button data-v="F" class="activo">Insolación</button><button data-v="ecc">Excentricidad</button><button data-v="obl">Oblicuidad</button><button data-v="prec">Precesión</button></div></div>
+      <canvas id="cvSenal"></canvas>
+      <div class="reproductor">
+        <button id="btnPlay2" class="boton-play"><svg><use href="#i-play"/></svg></button>
+        <span id="lecT2" class="t-actual">−1100 kyr</span>
+        <input type="range" id="slTiempo2" min="-1100" max="0" step="0.5" value="-1100">
+      </div>
+    </div>
+    <div class="panel espins">
+      <h2><svg><use href="#i-barras"/></svg>Espectro de insolación</h2>
+      <canvas id="cvEspIns"></canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 3. EL RELOJ INTERNO -->
+<section id="reloj" class="pantalla">
+  <div class="enc-pantalla">
+    <div><h1>El reloj interno</h1><p>La dinámica no lineal detrás del ritmo glacial.</p></div>
+    <div class="miga">PLEISTOCENO <span>›</span> <b>03 / 05</b></div>
+  </div>
+  <div class="g-reloj">
+    <div class="panel fases">
+      <div class="panel-cab"><h2><svg><use href="#i-espiral"/></svg>Plano de fases <span class="tenue">· clic para lanzar trayectorias</span></h2>
+        <div class="segmentado chico" id="segForzF"><button data-v="cero" class="activo">Autónomo · I = 0</button><button data-v="real">Forzado · I(t)</button></div></div>
+      <canvas id="cvFase"></canvas>
+      <div class="control-k">
+        <span>κ = <b id="vK">1.054</b></span>
+        <input type="range" id="slK" min="0.4" max="1.5" step="0.001" value="1.0536394044">
+        <button id="btnKArt" class="boton-borde chico">κ del artículo</button>
+        <button id="btnLimpiar" class="boton-borde chico">Limpiar</button>
+      </div>
+    </div>
+    <div class="col-centro">
+      <div class="panel trayectoria">
+        <h2><svg><use href="#i-pulso"/></svg>Trayectoria temporal y(t)</h2>
+        <canvas id="cvFaseSerie"></canvas>
+      </div>
+      <div class="panel tres-datos">
+        <div><span><svg><use href="#i-pulso"/></svg>Período lineal 2π/ω</span><b id="dPlin">—</b></div>
+        <div><span><svg><use href="#i-pulso"/></svg>Período simulado</span><b class="cian" id="dPsim">—</b></div>
+        <div><span><svg><use href="#i-reloj"/></svg>κ crítico (Hopf)</span><b id="dKc">—</b></div>
+      </div>
+    </div>
+    <div class="panel estabilidad">
+      <h2><svg><use href="#i-capas"/></svg>Estabilidad local <span class="tenue">· I = 0</span></h2>
+      <div class="ecuacion">dx/dt = y + κx − (μ/3)x³<br>dy/dt = −αx − βx³ − θ</div>
+      <div id="panelEstab"></div>
+    </div>
+    <div class="panel bifurcacion">
+      <h2><svg><use href="#i-barras"/></svg>Bifurcación de Hopf <span class="tenue">· amplitud del ciclo límite vs κ</span></h2>
+      <div class="bif-cuerpo">
+        <canvas id="cvBif"></canvas>
+        <div class="interpretacion"><h3><svg><use href="#i-info"/></svg>Interpretación</h3>
+          <p>Para κ &lt; κc el equilibrio atrae: no hay glaciaciones periódicas. En <b>κc = μx*²</b> la traza del jacobiano cambia de signo, el equilibrio pierde estabilidad y nace un <b class="cian">ciclo límite</b>: una bifurcación de Hopf.</p></div>
+      </div>
+    </div>
+    <div class="panel canard">
+      <h2><svg><use href="#i-espiral"/></svg>Explosión canard</h2>
+      <p>El ciclo que nace en κc es pequeño (~33 kyr). Cerca de κ ≈ 0,775, un cambio minúsculo del parámetro lo hace <b>saltar</b> al gran ciclo de relajación de ~92 kyr, típico de un sistema rápido-lento.</p>
+      <div class="formula">κc = μ·x*² ≈ <span id="kcForm">0.7653</span></div>
+      <div class="dos-mini">
+        <div><span>κ = 0.772</span><canvas id="cvCanardA"></canvas></div>
+        <div class="flecha">»</div>
+        <div><span>κ = 0.780</span><canvas id="cvCanardB"></canvas></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 4. SINCRONIZACIÓN -->
+<section id="mapa" class="pantalla">
+  <div class="enc-pantalla">
+    <div><h1>Sincronización</h1><p>Dónde el reloj interno encuentra el pulso de la órbita.</p></div>
+    <div class="miga">PLEISTOCENO <span>›</span> <b>04 / 05</b></div>
+  </div>
+  <div class="g-mapa">
+    <div class="panel atlas">
+      <div class="panel-cab"><h2><svg><use href="#i-grilla"/></svg>Atlas de sincronización</h2>
+        <div class="segmentado chico" id="segModo"><button data-v="periodo" class="activo">Período</button><button data-v="corr">Correlación</button></div></div>
+      <div class="atlas-cuerpo">
+        <canvas id="cvMapa"></canvas>
+        <div class="atlas-lado">
+          <div class="contador"><b id="nSim">0</b><span>simulaciones completas</span><div class="progreso"><div id="barraMapa"></div></div></div>
+          <div class="zonas"><h3>Zonas dinámicas</h3><div id="leyendaMapa"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-centro">
+      <div class="panel"><h2><svg><use href="#i-pulso"/></svg>Serie de la celda</h2><canvas id="cvMapaSerie"></canvas></div>
+      <div class="panel"><h2><svg><use href="#i-barras"/></svg>Espectro de la celda</h2><canvas id="cvMapaEsp"></canvas></div>
+    </div>
+    <div class="panel seleccion">
+      <h2><svg><use href="#i-matraz"/></svg>Experimento seleccionado</h2>
+      <div class="fila-dato"><span>Escala temporal r</span><b id="selR">1.00</b></div>
+      <div class="fila-dato"><span>Amplitud A</span><b id="selA">1.00</b></div>
+      <div class="fila-dato"><span>Período dominante</span><b class="caja" id="selP">—</b></div>
+      <div class="fila-dato"><span>Correlación con LR04</span><b id="selC">—</b></div>
+      <button id="btnVerPlaneta" class="boton-lleno"><svg><use href="#i-play"/></svg>Ver en el planeta →</button>
+      <p class="nota"><svg><use href="#i-info"/></svg>Rombo blanco = valores del artículo (r = 1, A = 1). Cada celda es una simulación de 1.100.000 años con insolación real.</p>
+    </div>
+    <div class="panel mpt">
+      <div class="panel-cab"><h2><svg><use href="#i-montana"/></svg>Transición del Pleistoceno Medio</h2>
+        <div class="leyenda"><span><i class="cian"></i>Modelo con r(t)</span><span><i class="blanco"></i>LR04</span><span class="tenue">2 millones de años</span></div></div>
+      <canvas id="cvMPT"></canvas>
+      <canvas id="cvMPTper"></canvas>
+    </div>
+    <div class="panel mpt-control">
+      <h2><svg><use href="#i-engranaje"/></svg>Rampa del reloj r(t)</h2>
+      <label class="campo-num"><span>r antes</span><b id="vR0">0.50</b><input type="range" id="slR0" min="0.3" max="1.2" step="0.01" value="0.5"></label>
+      <label class="campo-num"><span>r después</span><b id="vR1">1.00</b><input type="range" id="slR1" min="0.6" max="1.6" step="0.01" value="1"></label>
+      <label class="campo-num"><span>Inicio de la rampa</span><b id="vRa">−1250 kyr</b><input type="range" id="slRa" min="900" max="1600" step="10" value="1250"></label>
+      <label class="campo-num"><span>Fin de la rampa</span><b id="vRb">−700 kyr</b><input type="range" id="slRb" min="300" max="1100" step="10" value="700"></label>
+      <p class="nota" id="notaMPT"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ 5. MÉTODOS NUMÉRICOS -->
+<section id="metodos" class="pantalla">
+  <div class="enc-pantalla">
+    <div><h1>Métodos numéricos</h1><p>La misma ecuación, distintas aproximaciones.</p></div>
+    <div class="miga">PLEISTOCENO <span>›</span> <b>05 / 05</b></div>
+  </div>
+  <div class="barra-control">
+    <label>Paso h <select id="selH"><option value="1">1 kyr</option><option value="0.5" selected>0.5 kyr</option><option value="0.25">0.25 kyr</option><option value="0.1">0.1 kyr</option><option value="0.05">0.05 kyr</option><option value="0.025">0.025 kyr</option></select></label>
+    <label>Ventana <select id="selVentana"><option value="50" selected>50 kyr</option><option value="200">200 kyr</option><option value="1100">1.100 kyr</option></select></label>
+    <label>Forzamiento <select id="selForzM"><option value="exacta">Insolación real (exacta en cada t)</option><option value="cero">Ninguno · I(t) = 0</option></select></label>
+    <span class="tenue derecha">Referencia: RK4 · h = 0,0025 kyr</span>
+  </div>
+  <div class="g-metodos">
+    <div class="panel tres-met">
+      <div class="panel-cab"><h2><svg><use href="#i-pulso"/></svg>Tres métodos, una misma ecuación</h2>
+        <div class="leyenda"><span><i style="background:#ff9f43"></i>Euler</span><span><i style="background:#5be37d"></i>Heun</span><span><i style="background:#3fd0ff"></i>RK4</span><span><i class="blanco"></i>referencia</span></div></div>
+      <canvas id="cvMet"></canvas>
+    </div>
+    <div class="col-centro">
+      <div class="panel"><h2><svg><use href="#i-engranaje"/></svg>Error absoluto en el tiempo</h2><canvas id="cvMetErr"></canvas></div>
+      <div class="panel"><h2><svg><use href="#i-capas"/></svg>Convergencia log-log</h2><canvas id="cvConv"></canvas></div>
+    </div>
+    <div class="panel tabla-panel">
+      <h2><svg><use href="#i-grilla"/></svg>Comparativa de error y convergencia</h2>
+      <table class="tabla" id="tablaErr"></table>
+    </div>
+    <div class="panel estab-num">
+      <h2><svg><use href="#i-escudo"/></svg>Límite de estabilidad</h2>
+      <div class="formula grande">h<sub>máx</sub> ≈ 2 / |λ|</div>
+      <div class="formula">λ = κ − μx²  con |x| máximo</div>
+      <div id="panelEstabNum"></div>
+    </div>
+    <div class="panel interp">
+      <h2><svg><use href="#i-info"/></svg>Interpretación</h2>
+      <p>Al dividir h entre 2 el error baja ×2 (Euler, orden 1), ×4 (Heun, orden 2) y ×16 (RK4, orden 4). La pendiente en la gráfica log-log es el <b>orden observado</b>.</p>
+      <p>Con ventanas largas el error se estanca: es un sistema de relajación, y un error mínimo adelanta o retrasa una deglaciación entera (<b>sensibilidad dinámica</b>, no un fallo del método).</p>
+      <p>Con h = 1 kyr, Euler y Heun <b class="rojo">divergen</b>: la ecuación de x se vuelve rígida cuando |x| es grande.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <span>Mitsui, Ditlevsen, Boers y Crucifix (2025) · Earth Syst. Dynam. 16, 1569–1584 &nbsp;/&nbsp; Laskar et al. (2004) &nbsp;/&nbsp; Lisiecki y Raymo (2005)</span>
+  <span><i></i>Ecuaciones Diferenciales · UAGRM FICCT · laboratorio interactivo</span>
+</footer>
+<canvas id="cvHielo"></canvas>
+<div class="tooltip" id="tooltip"></div>
+
+<script src="js/datos.js"></script>
+<script src="js/modelo.js"></script>
+<script src="js/analisis.js"></script>
+<script src="js/graficos.js"></script>
+<script src="js/escenario.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

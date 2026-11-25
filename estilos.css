@@ -1,0 +1,339 @@
+/* =====================================================================
+   ESTILO "GLACIAR" — El enigma de los 100.000 años
+   ===================================================================== */
+:root {
+  --noche: #050d18; --panel-a: rgba(13, 36, 62, 0.80); --panel-b: rgba(6, 20, 37, 0.86);
+  --borde: rgba(84, 186, 255, 0.30); --borde-suave: rgba(84, 186, 255, 0.14);
+  --cian: #3fd0ff; --cian2: #8fe3ff; --hielo: #d9f3ff; --ambar: #ffb454; --rojo: #ff6b6b; --verde: #5be37d;
+  --texto: #e6f3ff; --tenue: #8eb0cc; --fuente: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+* { box-sizing: border-box; }
+html { background: var(--noche); }
+body {
+  margin: 0; min-height: 100vh; color: var(--texto); font: 13.5px/1.45 var(--fuente);
+  background:
+    radial-gradient(1100px 520px at 75% 0%, rgba(40, 140, 255, 0.10), transparent 60%),
+    radial-gradient(900px 600px at 0% 100%, rgba(120, 220, 255, 0.07), transparent 60%),
+    linear-gradient(180deg, #071526 0%, var(--noche) 60%);
+  background-attachment: fixed; overflow-x: hidden;
+}
+svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.cian { color: var(--cian) !important; } .ambar { color: var(--ambar) !important; } .rojo { color: var(--rojo) !important; }
+.tenue { color: var(--tenue); font-weight: 400; }
+
+/* ---------------- Cabecera ---------------- */
+header { position: relative; z-index: 5; border-bottom: 1px solid var(--borde-suave); overflow: hidden; }
+#cvCielo { position: absolute; left: 0; top: 0; width: 100%; height: calc(100% - 50px); z-index: -1; }
+header .mamut { position: absolute; height: 104px; right: 30%; top: 2px; filter: drop-shadow(0 4px 10px rgba(0,0,0,.6)) brightness(.92); pointer-events: none; }
+.cab-contenido { display: flex; align-items: center; justify-content: space-between; padding: 12px 24px 10px; min-height: 108px; }
+.marca { display: flex; align-items: center; gap: 14px; }
+.emblema { width: 68px; height: 68px; filter: drop-shadow(0 0 14px rgba(63, 208, 255, 0.55)); }
+.titulo { font-size: 33px; font-weight: 600; letter-spacing: 0.2px; color: #fff; text-shadow: 0 2px 16px rgba(0, 0, 0, 0.7); line-height: 1.1; }
+.titulo b { color: var(--cian); font-weight: 700; text-shadow: 0 0 22px rgba(63, 208, 255, 0.65); }
+.sub { margin-top: 5px; font-size: 12.5px; letter-spacing: 3.2px; color: #b8d9f0; text-shadow: 0 1px 8px #000; }
+.acciones { display: flex; gap: 12px; align-items: center; }
+.insignia { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 10px; font-size: 13px; font-weight: 600;
+  color: #9ff0b6; background: rgba(10, 40, 30, 0.75); border: 1px solid rgba(91, 227, 125, 0.45); backdrop-filter: blur(6px); }
+.insignia i, .estado-motor i, footer i { width: 8px; height: 8px; border-radius: 50%; background: var(--verde); box-shadow: 0 0 8px var(--verde); display: inline-block; }
+nav { display: flex; align-items: center; gap: 4px; padding: 0 18px; height: 50px; background: linear-gradient(180deg, rgba(4, 14, 28, 0.55), rgba(4, 14, 28, 0.88)); backdrop-filter: blur(6px); }
+nav button { display: flex; align-items: center; gap: 9px; height: 38px; padding: 0 16px; border-radius: 12px; border: 1px solid transparent; background: none;
+  color: #cfe3f3; font: 500 14.5px var(--fuente); cursor: pointer; transition: all .18s; }
+nav button em { font-style: normal; color: var(--tenue); font-size: 12.5px; margin-right: 2px; }
+nav button:hover { background: rgba(63, 208, 255, 0.07); color: #fff; }
+nav button.activa { color: #fff; background: linear-gradient(180deg, rgba(40, 150, 230, 0.35), rgba(20, 90, 160, 0.25)); border-color: rgba(63, 208, 255, 0.7);
+  box-shadow: 0 0 18px rgba(63, 208, 255, 0.35), inset 0 0 12px rgba(63, 208, 255, 0.15); }
+nav button.activa em { color: var(--cian2); }
+.estado-motor { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 1px; color: #cfe3f3; }
+
+/* ---------------- Botones y controles ---------------- */
+button { font-family: var(--fuente); }
+.boton-borde { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 14px; border-radius: 10px; cursor: pointer; font-size: 13.5px; font-weight: 500;
+  color: var(--texto); background: rgba(8, 26, 46, 0.7); border: 1px solid rgba(143, 227, 255, 0.45); transition: all .15s; }
+.boton-borde:hover { border-color: var(--cian); box-shadow: 0 0 14px rgba(63, 208, 255, 0.3); }
+.boton-borde.ancho { width: 100%; }
+.boton-borde.chico { padding: 5px 10px; font-size: 12.5px; }
+.boton-lleno { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 12px; border: none; border-radius: 12px; cursor: pointer;
+  font-size: 16px; font-weight: 700; color: #03203a; background: linear-gradient(180deg, #7fdcff, #2fb6f5); box-shadow: 0 0 24px rgba(63, 208, 255, 0.45); }
+.boton-play { width: 40px; height: 34px; border-radius: 9px; border: 1px solid var(--cian); background: rgba(63, 208, 255, 0.18); color: var(--cian2); cursor: pointer; display: grid; place-items: center; box-shadow: 0 0 14px rgba(63,208,255,.35); }
+.boton-icono { width: 34px; height: 34px; border-radius: 9px; border: none; background: none; color: #cfe3f3; cursor: pointer; display: grid; place-items: center; }
+select { font: 500 13.5px var(--fuente); color: var(--texto); background: rgba(5, 22, 40, 0.9); border: 1px solid rgba(143, 227, 255, 0.4); border-radius: 9px; padding: 7px 10px; cursor: pointer; }
+input[type=range] { -webkit-appearance: none; appearance: none; width: 100%; height: 22px; background: none; cursor: pointer; }
+input[type=range]::-webkit-slider-runnable-track { height: 5px; border-radius: 4px; background: linear-gradient(90deg, var(--cian) var(--p, 50%), rgba(143, 200, 240, 0.22) var(--p, 50%)); }
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; margin-top: -5.5px; border-radius: 50%; background: #dff6ff; border: 2px solid var(--cian); box-shadow: 0 0 10px var(--cian); }
+input[type=range]::-moz-range-track { height: 5px; border-radius: 4px; background: rgba(143, 200, 240, 0.22); }
+input[type=range]::-moz-range-progress { height: 5px; border-radius: 4px; background: var(--cian); }
+input[type=range]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: #dff6ff; border: 2px solid var(--cian); }
+.segmentado { display: flex; padding: 3px; gap: 3px; border-radius: 11px; background: rgba(3, 14, 28, 0.8); border: 1px solid var(--borde-suave); }
+.segmentado button { flex: 1; padding: 7px 12px; border-radius: 8px; border: 1px solid transparent; background: none; color: var(--tenue); font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+.segmentado button.activo { color: #fff; background: rgba(40, 150, 230, 0.3); border-color: rgba(63, 208, 255, 0.7); box-shadow: 0 0 12px rgba(63, 208, 255, 0.25); }
+.segmentado.chico button { padding: 4px 10px; font-size: 12px; }
+
+/* ---------------- Estructura general ---------------- */
+main { position: relative; z-index: 1; padding: 16px 22px 10px; }
+.pantalla { display: none; animation: aparecer .35s ease; }
+.pantalla.activa { display: block; }
+@keyframes aparecer { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.enc-pantalla { display: flex; align-items: flex-end; justify-content: space-between; margin: 2px 4px 14px; }
+h1 { margin: 0; font-size: 38px; font-weight: 600; letter-spacing: -0.3px; color: #fff; text-shadow: 0 0 20px rgba(63, 208, 255, 0.25); line-height: 1.1; }
+.enc-pantalla p, .enc-mini p { margin: 4px 0 0; color: #b9d3e8; font-size: 15px; }
+.miga { color: var(--tenue); font-size: 13px; letter-spacing: 1.2px; }
+.miga span { margin: 0 8px; } .miga b { color: #fff; font-size: 14px; }
+
+.panel { position: relative; min-width: 0; border-radius: 16px; padding: 14px 16px; background: linear-gradient(180deg, var(--panel-a), var(--panel-b));
+  border: 1px solid var(--borde); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 0 28px rgba(30, 140, 255, 0.08), 0 14px 30px rgba(0, 0, 0, 0.35); backdrop-filter: blur(8px); }
+.panel h2 { display: flex; align-items: center; gap: 10px; margin: 0 0 10px; font-size: 13.5px; font-weight: 700; letter-spacing: 1.1px; text-transform: uppercase; color: #fff; }
+.panel h2 svg { color: var(--cian); width: 20px; height: 20px; filter: drop-shadow(0 0 6px rgba(63, 208, 255, 0.6)); }
+.panel h2 .tenue { text-transform: none; letter-spacing: 0; font-size: 12.5px; }
+.panel-cab { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+.panel-cab h2 { margin: 0; }
+.leyenda { display: flex; gap: 16px; font-size: 12.5px; color: #d5e8f7; align-items: center; }
+.leyenda i { display: inline-block; width: 16px; height: 3px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+.leyenda i.cian { background: var(--cian); box-shadow: 0 0 6px var(--cian); } .leyenda i.blanco { background: #e9f2fb; }
+.rotulo { font-size: 12px; letter-spacing: 2.4px; color: var(--tenue); }
+.nota { display: flex; gap: 8px; color: var(--tenue); font-size: 12px; margin: 10px 0 0; line-height: 1.45; }
+.nota svg { width: 15px; height: 15px; margin-top: 1px; }
+canvas { display: block; width: 100%; }
+.col-centro { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.formula { text-align: center; font: italic 600 19px "Cambria Math", "Times New Roman", serif; color: #fff; padding: 9px 12px; margin: 10px auto; border-radius: 12px;
+  border: 1px solid rgba(63, 208, 255, 0.55); background: rgba(20, 70, 120, 0.25); box-shadow: 0 0 16px rgba(63, 208, 255, 0.2); width: fit-content; min-width: 70%; }
+.formula.grande { font-size: 25px; }
+
+/* ---------------- 1. Planeta ---------------- */
+.g-planeta { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+.globo-zona { grid-column: span 4; position: relative; display: flex; flex-direction: column; }
+.enc-mini { margin: 0 0 0 4px; }
+.enc-mini h1 { font-size: 30px; border-left: 3px solid var(--cian); padding-left: 12px; }
+.enc-mini p { padding-left: 15px; font-size: 13.5px; }
+#cvGlobo { flex: 1; min-height: 330px; }
+.nota-mini { font-size: 10.5px; letter-spacing: 1.2px; color: var(--tenue); margin-top: -4px; }
+.tiempo { grid-column: span 5; overflow: hidden; padding: 16px 22px 0; display: flex; flex-direction: column; }
+.tiempo-cab { display: flex; justify-content: space-between; }
+.tiempo-grande { font-size: 50px; font-weight: 600; color: #fff; line-height: 1.15; margin: 4px 0 8px; letter-spacing: -0.5px; font-variant-numeric: tabular-nums; }
+.pildoras { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.pildora { padding: 5px 14px; border-radius: 9px; font-weight: 700; font-size: 13.5px; border: 1px solid currentColor; background: rgba(63, 208, 255, 0.12); color: var(--cian); }
+.lecturas { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 24px; position: relative; z-index: 2; }
+.lectura { display: flex; gap: 14px; align-items: center; }
+.lectura .ico { width: 46px; height: 46px; border-radius: 12px; display: grid; place-items: center; color: var(--cian2); background: rgba(40, 120, 190, 0.18); border: 1px solid var(--borde-suave); }
+.lectura .ico svg { width: 24px; height: 24px; }
+.lectura .ico.sol { color: var(--ambar); background: rgba(255, 180, 84, 0.12); }
+.lectura span { display: block; color: #b9d3e8; font-size: 12.5px; }
+.lectura b { font-size: 27px; font-weight: 600; font-variant-numeric: tabular-nums; color: #fff; }
+.lectura b small { font-size: 13px; color: var(--tenue); font-weight: 500; margin-left: 4px; }
+.marco-icebergs { flex: 1; min-height: 80px; position: relative; margin: 8px -22px 0; }
+.icebergs { position: absolute; inset: 0; width: 100%; height: 100%; }
+.experimento { grid-column: span 3; display: flex; flex-direction: column; gap: 10px; }
+.campo { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: #c8deef; }
+.campo > span { display: flex; justify-content: space-between; }
+.campo b { color: #fff; font-size: 15px; }
+.campo small { display: flex; justify-content: space-between; color: var(--tenue); font-size: 11px; margin-top: -6px; }
+.campo small i { font-style: normal; }
+.registro { grid-column: span 12; }
+#cvSerie { height: 190px; }
+.reproductor { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
+.reproductor input { flex: 1; }
+.t-actual { font-size: 12.5px; color: #cfe3f3; min-width: 64px; font-variant-numeric: tabular-nums; }
+.huella { grid-column: span 6; }
+.metricas { display: grid; grid-template-columns: repeat(4, 1fr); }
+.metricas > div { padding: 4px 16px; border-left: 1px solid var(--borde-suave); display: flex; flex-direction: column; gap: 3px; }
+.metricas > div:first-child { border-left: none; padding-left: 4px; }
+.metricas span { color: #b9d3e8; font-size: 12.5px; }
+.metricas b { font-size: 30px; font-weight: 600; color: #fff; font-variant-numeric: tabular-nums; line-height: 1.2; }
+.metricas small { color: var(--tenue); font-size: 11.5px; }
+.ritmo { grid-column: span 6; }
+#cvEspectro { height: 150px; }
+
+/* ---------------- 2. Órbita ---------------- */
+.g-orbita { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+.ciclos { grid-column: span 3; display: flex; flex-direction: column; gap: 10px; }
+.ciclo { display: flex; gap: 12px; align-items: center; padding: 10px; border-radius: 12px; background: rgba(4, 16, 32, 0.55); border: 1px solid var(--borde-suave); }
+.ciclo canvas { width: 96px; height: 70px; flex: none; }
+.ciclo h3 { margin: 0; font-size: 16px; color: #fff; }
+.ciclo b { font-size: 13.5px; }
+.ciclo p { margin: 3px 0 0; font-size: 12px; color: #b9d3e8; }
+.orbita-zona { grid-column: span 6; }
+#cvOrbita { height: 420px; }
+.paradoja { grid-column: span 3; display: flex; flex-direction: column; gap: 4px; overflow: hidden; }
+.titular { font-size: 25px !important; text-transform: none !important; letter-spacing: 0 !important; line-height: 1.2; margin: 6px 0 4px !important; }
+.paradoja p { margin: 4px 0; color: #d5e8f7; font-size: 14px; }
+.paradoja p.tenue { color: var(--tenue); font-size: 12.5px; }
+.dato-orbita { margin-top: auto; display: flex; justify-content: space-between; gap: 8px; font-size: 12.5px; color: var(--tenue); border-top: 1px solid var(--borde-suave); padding-top: 10px; }
+.dato-orbita b { color: #fff; font-size: 14px; }
+.senal { grid-column: span 8; }
+#cvSenal { height: 200px; }
+.espins { grid-column: span 4; }
+#cvEspIns { height: 236px; }
+
+/* ---------------- 3. Reloj interno ---------------- */
+.g-reloj { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+.fases { grid-column: span 4; }
+#cvFase { height: 340px; cursor: crosshair; }
+.control-k { display: flex; align-items: center; gap: 10px; margin-top: 6px; font-size: 14px; white-space: nowrap; }
+.control-k b { color: var(--cian); font-variant-numeric: tabular-nums; }
+.g-reloj > .col-centro { grid-column: span 4; }
+#cvFaseSerie { height: 236px; }
+.tres-datos { display: grid; grid-template-columns: repeat(3, 1fr); padding: 12px 6px; }
+.tres-datos > div { padding: 0 12px; border-left: 1px solid var(--borde-suave); display: flex; flex-direction: column; gap: 4px; }
+.tres-datos > div:first-child { border-left: none; }
+.tres-datos span { display: flex; align-items: center; gap: 6px; color: #b9d3e8; font-size: 12.5px; }
+.tres-datos span svg { color: var(--cian); width: 16px; height: 16px; }
+.tres-datos b { font-size: 25px; font-weight: 600; color: #fff; font-variant-numeric: tabular-nums; }
+.estabilidad { grid-column: span 4; }
+.ecuacion { font: italic 16px "Cambria Math", "Times New Roman", serif; color: #fff; background: rgba(0, 0, 0, 0.25); border-radius: 10px; padding: 8px 14px; line-height: 1.6; margin-bottom: 10px; }
+.fila-dato { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 7px 0; border-bottom: 1px dashed var(--borde-suave); font-size: 13.5px; color: #c8deef; }
+.fila-dato b { color: #fff; font-size: 15px; font-variant-numeric: tabular-nums; text-align: right; }
+.fila-dato b.caja, .caja { padding: 4px 12px; border-radius: 9px; border: 1px solid rgba(63, 208, 255, 0.6); background: rgba(20, 80, 140, 0.3); }
+.matriz { display: inline-grid; grid-template-columns: auto auto; gap: 2px 18px; padding: 4px 12px; border-left: 2px solid #cfe3f3; border-right: 2px solid #cfe3f3; border-radius: 5px; font-variant-numeric: tabular-nums; }
+.etiqueta-estado { display: flex; justify-content: center; align-items: center; gap: 8px; margin: 12px auto 0; width: fit-content; padding: 8px 22px; border-radius: 11px; font-weight: 700; font-size: 15px; }
+.bifurcacion { grid-column: span 8; }
+.bif-cuerpo { display: grid; grid-template-columns: 1fr 260px; gap: 14px; align-items: stretch; }
+#cvBif { height: 205px; }
+.interpretacion { border-radius: 12px; padding: 12px 14px; background: rgba(4, 16, 32, 0.55); border: 1px solid var(--borde-suave); }
+.interpretacion h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; font-size: 15px; }
+.interpretacion p { margin: 0; color: #c8deef; font-size: 13px; }
+.canard { grid-column: span 4; }
+.canard p { margin: 0; color: #d5e8f7; font-size: 13.5px; }
+.dos-mini { display: grid; grid-template-columns: 1fr auto 1fr; gap: 8px; align-items: center; }
+.dos-mini > div:not(.flecha) { border-radius: 12px; border: 1px solid var(--borde-suave); background: rgba(4, 16, 32, 0.6); padding: 6px; text-align: center; font-size: 12.5px; color: #cfe3f3; }
+.dos-mini canvas { height: 104px; }
+.flecha { font-size: 28px; color: var(--cian); text-shadow: 0 0 10px var(--cian); }
+
+/* ---------------- 4. Sincronización ---------------- */
+.g-mapa { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+.atlas { grid-column: span 5; }
+.atlas-cuerpo { display: grid; grid-template-columns: 1fr 178px; gap: 12px; }
+#cvMapa { height: 340px; cursor: pointer; }
+.atlas-lado { display: flex; flex-direction: column; gap: 14px; justify-content: center; }
+.contador { text-align: center; color: #c8deef; font-size: 12.5px; }
+.contador b { display: block; font-size: 30px; color: #fff; font-variant-numeric: tabular-nums; }
+.progreso { height: 4px; border-radius: 4px; background: rgba(255, 255, 255, 0.08); overflow: hidden; margin-top: 8px; }
+.progreso div { height: 100%; width: 0; background: var(--cian); box-shadow: 0 0 8px var(--cian); }
+.zonas { border-radius: 12px; padding: 10px 12px; border: 1px solid var(--borde-suave); background: rgba(4, 16, 32, 0.6); }
+.zonas h3 { margin: 0 0 8px; font-size: 13px; }
+#leyendaMapa div { display: flex; align-items: center; gap: 9px; font-size: 12.5px; color: #d5e8f7; padding: 3px 0; }
+#leyendaMapa i { width: 14px; height: 14px; border-radius: 4px; flex: none; }
+.g-mapa > .col-centro { grid-column: span 4; }
+#cvMapaSerie { height: 130px; } #cvMapaEsp { height: 150px; }
+.seleccion { grid-column: span 3; display: flex; flex-direction: column; gap: 4px; }
+.seleccion .boton-lleno { margin-top: 14px; }
+.mpt { grid-column: span 9; }
+#cvMPT { height: 200px; } #cvMPTper { height: 130px; margin-top: 6px; }
+.mpt-control { grid-column: span 3; display: flex; flex-direction: column; gap: 12px; }
+.campo-num { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; align-items: center; font-size: 13px; color: #c8deef; }
+.campo-num b { padding: 3px 10px; border-radius: 8px; border: 1px solid rgba(143, 227, 255, 0.45); background: rgba(5, 22, 40, 0.9); color: #fff; font-variant-numeric: tabular-nums; min-width: 92px; text-align: center; }
+.campo-num input { grid-column: span 2; }
+
+/* ---------------- 5. Métodos ---------------- */
+.barra-control { display: flex; align-items: center; gap: 22px; padding: 10px 18px; margin-bottom: 14px; border-radius: 14px; border: 1px solid var(--borde); background: linear-gradient(180deg, var(--panel-a), var(--panel-b)); }
+.barra-control label { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #c8deef; }
+.barra-control .derecha { margin-left: auto; }
+.g-metodos { display: grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
+.tres-met { grid-column: span 7; }
+#cvMet { height: 360px; }
+.g-metodos > .col-centro { grid-column: span 5; }
+#cvMetErr { height: 150px; } #cvConv { height: 165px; }
+.tabla-panel { grid-column: span 5; }
+.estab-num { grid-column: span 4; }
+.interp { grid-column: span 3; }
+.interp p { margin: 0 0 8px; color: #c8deef; font-size: 13px; }
+.tabla { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 13.5px; }
+.tabla th { color: #b9d3e8; font-weight: 600; padding: 6px 8px; border-bottom: 1px solid var(--borde); }
+.tabla td { padding: 5px 8px; text-align: center; border-bottom: 1px solid rgba(84, 186, 255, 0.08); }
+.tabla tr.orden td { color: var(--verde); font-weight: 700; border-top: 1px solid var(--borde); border-bottom: none; background: rgba(91, 227, 125, 0.06); }
+.tabla tr.orden td:first-child { color: var(--ambar); text-align: left; }
+
+/* ---------------- Pie, hielo de fondo, tooltip ---------------- */
+footer { position: relative; z-index: 1; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 10px 24px 14px; font-size: 11.5px; color: #7f9db8; }
+footer span:last-child { display: flex; align-items: center; gap: 8px; }
+#cvHielo { position: fixed; left: 0; right: 0; bottom: 0; height: 180px; z-index: 0; pointer-events: none; opacity: 0.55; }
+.tooltip { position: fixed; z-index: 30; pointer-events: none; display: none; padding: 8px 11px; border-radius: 10px; font-size: 12.5px; line-height: 1.5;
+  background: rgba(4, 18, 34, 0.96); border: 1px solid var(--cian); box-shadow: 0 0 16px rgba(63, 208, 255, 0.3); }
+
+/* ---------------- Modo presentación ---------------- */
+body.presentacion footer, body.presentacion .insignia { display: none; }
+body.presentacion main { padding-top: 12px; }
+
+@media (max-width: 1250px) {
+  .g-planeta > *, .g-orbita > *, .g-reloj > *, .g-mapa > *, .g-metodos > * { grid-column: span 6 !important; }
+  .registro, .bifurcacion, .mpt, .tres-met { grid-column: span 12 !important; }
+  .titulo { font-size: 26px; } header .mamut { display: none; }
+  nav button { padding: 0 9px; font-size: 13px; } .estado-motor { display: none; }
+}
+.metricas b small, .tres-datos b small, .lectura b small { font-size: 13px; color: var(--tenue); font-weight: 500; margin-left: 3px; }
+
+/* =====================================================================
+   v3 · cabecera y pantalla "El planeta" según el diseño de referencia
+   ===================================================================== */
+header { background: #050d18 url('assets/glaciar_cabecera.jpg') 70% 62% / cover no-repeat; border-bottom: 1px solid rgba(84,186,255,.22); }
+header::before { content: ''; position: absolute; inset: 0; z-index: -1;
+  background: linear-gradient(90deg, rgba(3,10,22,.92) 0%, rgba(3,10,22,.72) 30%, rgba(3,10,22,.15) 60%, rgba(3,10,22,.25) 100%),
+              linear-gradient(180deg, rgba(3,10,22,0) 55%, rgba(3,10,22,.75) 100%); }
+#cvCielo, header .mamut { display: none; }
+.cab-contenido { min-height: 84px; padding: 10px 26px 8px 38px; }
+.logo { width: 64px; height: 64px; border-radius: 14px; display: grid; place-items: center; color: var(--cian);
+  border: 1.5px solid rgba(63,208,255,.75); background: rgba(6,30,52,.65); box-shadow: 0 0 18px rgba(63,208,255,.35), inset 0 0 14px rgba(63,208,255,.18); }
+.logo svg { width: 38px; height: 38px; stroke-width: 1.5; filter: drop-shadow(0 0 6px rgba(63,208,255,.8)); }
+.titulo { font-size: 30px; font-weight: 600; letter-spacing: .1px; }
+.sub { font-size: 11.5px; letter-spacing: 4.6px; margin-top: 6px; color: #c5dbec; }
+.insignia { color: var(--ambar); background: rgba(40,26,6,.72); border: 1px solid rgba(255,180,84,.75); box-shadow: 0 0 14px rgba(255,180,84,.2); padding: 9px 16px; }
+.insignia i { background: var(--ambar); box-shadow: 0 0 8px var(--ambar); }
+.boton-borde { border-color: rgba(214,232,248,.55); background: rgba(5,16,30,.6); }
+nav { height: 46px; padding: 0 26px 0 36px; gap: 18px; background: linear-gradient(180deg, rgba(3,10,22,.70), rgba(3,10,22,.92)); border-top: 1px solid rgba(84,186,255,.10); }
+nav button { position: relative; height: 46px; padding: 0 18px; border: none !important; border-radius: 0; background: none !important; box-shadow: none !important; font-size: 14.5px; gap: 12px; }
+nav button em { margin-right: 10px; font-size: 13px; }
+nav button svg { width: 22px; height: 22px; stroke-width: 1.5; }
+nav button.activa { color: var(--cian2); }
+nav button.activa svg { color: var(--cian); filter: drop-shadow(0 0 5px rgba(63,208,255,.8)); }
+nav button.activa::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; border-radius: 3px; background: var(--cian); box-shadow: 0 0 12px var(--cian), 0 0 3px var(--cian); }
+.estado-motor { font-size: 11.5px; letter-spacing: 1.2px; }
+
+/* ---- Planeta ---- */
+.g-planeta { grid-template-columns: 37fr 38fr 22fr; grid-template-rows: auto auto auto; gap: 16px; }
+.globo-zona { grid-column: auto; position: relative; min-height: 340px; margin: -16px 0 0 -22px; padding: 16px 0 0 22px; border-radius: 0 0 18px 0;
+  background: linear-gradient(90deg, rgba(5,13,24,0) 0%, rgba(5,13,24,.2) 25%, rgba(5,13,24,.85) 62%, var(--noche) 100%), url('assets/glaciar_cabecera.jpg') 8% 70% / auto 150% no-repeat; }
+.globo-zona::after { content: ''; position: absolute; inset: auto 0 0 0; height: 90px; background: linear-gradient(180deg, rgba(5,13,24,0), var(--noche)); pointer-events: none; }
+.enc-mini { position: absolute; left: 32px; top: 18px; z-index: 2; }
+.enc-mini h1 { font-size: 27px; border-left: 3px solid var(--cian); padding-left: 14px; font-weight: 600; box-shadow: -2px 0 10px -4px var(--cian); }
+.enc-mini p { padding-left: 17px; font-size: 13.5px; color: #c9dcec; line-height: 1.45; margin-top: 6px; }
+#cvGlobo { position: absolute; inset: 0; width: 100%; height: 100%; min-height: 0; z-index: 1; }
+.nota-mini { position: absolute; left: 34px; bottom: 6px; z-index: 2; font-size: 10.5px; letter-spacing: .6px; color: #a9c2d6; margin: 0; }
+.tiempo { grid-column: auto; padding: 18px 30px 0; min-height: 340px;
+  background: linear-gradient(180deg, rgba(10,30,52,.92) 0%, rgba(8,24,44,.88) 58%, rgba(8,24,44,.15) 76%, rgba(8,24,44,0) 100%), url('assets/glaciar_franja.jpg') 50% 100% / 140% auto no-repeat, #081a30; }
+.tiempo-cab .rotulo { letter-spacing: 3.2px; font-size: 11.5px; color: #c5dbec; }
+.tiempo-cab .miga { font-size: 11.5px; } .tiempo-cab .miga b { font-size: 12.5px; }
+.tiempo-grande { font-size: 46px; margin: 2px 0 10px; }
+.pildoras { margin-bottom: 18px; }
+.pildora { padding: 4px 14px; font-size: 13px; border-radius: 8px; color: var(--cian) !important; border-color: var(--cian); box-shadow: 0 0 12px rgba(63,208,255,.3); }
+.rotulo.chico { font-size: 10.5px; letter-spacing: 1.6px; color: #c5dbec; }
+.lecturas { grid-template-columns: 1fr 1fr; gap: 20px 0; }
+.lecturas .lectura:nth-child(odd) { padding-right: 22px; border-right: 1px solid rgba(143,200,240,.18); }
+.lecturas .lectura:nth-child(even) { padding-left: 30px; }
+.lectura .ico { width: 46px; height: 46px; border-radius: 10px; background: rgba(4,16,30,.75); border: 1px solid rgba(143,200,240,.14); }
+.lectura span { font-size: 11.5px; margin-bottom: 2px; }
+.lectura b { font-size: 27px; }
+.experimento { grid-column: auto; gap: 8px; padding: 14px 18px; }
+.titulo-panel { display: flex; align-items: center; gap: 10px; margin: 0 0 4px; font-size: 17px; font-weight: 600; color: #fff; }
+.titulo-panel svg { width: 22px; height: 22px; color: var(--cian); }
+.experimento .campo { font-size: 12px; gap: 4px; }
+.experimento .campo b { font-size: 14px; }
+.experimento select { padding: 6px 10px; font-size: 13px; }
+.experimento .segmentado button { padding: 5px 8px; font-size: 12.5px; }
+.experimento .boton-borde { padding: 7px; font-size: 13.5px; }
+.experimento .nota { font-size: 11px; margin-top: 2px; }
+.registro { grid-column: 1 / -1; padding: 12px 18px 10px; }
+.registro .leyenda { font-size: 11.5px; } .registro .leyenda span:last-child { letter-spacing: .8px; }
+#cvSerie { height: 150px; }
+.boton-play { width: 44px; height: 32px; border-radius: 7px; background: rgba(63,208,255,.85); color: #03203a; border: none; box-shadow: 0 0 16px rgba(63,208,255,.6); }
+.t-actual { font-size: 12px; } .t-actual.hoy { min-width: 0; letter-spacing: .5px; }
+.reproductor select { padding: 4px 10px; }
+.fila3 { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.g-planeta .huella { position: relative; overflow: hidden; }
+.huella::after { content: ''; position: absolute; inset: auto 0 0 0; height: 60px; opacity: .25; pointer-events: none;
+  background: linear-gradient(180deg, rgba(8,24,44,1), rgba(8,24,44,0) 40%), url('assets/glaciar_franja.jpg') 50% 90% / 120% auto no-repeat; }
+.metricas > div { padding: 2px 16px 10px; } .metricas span { font-size: 12px; } .metricas small { font-size: 11.5px; }
+.metricas b { font-size: 29px; }
+#cvEspectro { height: 128px; }
+.panel h2 { font-size: 13px; letter-spacing: 1.6px; }
+.fila3 > .panel { grid-column: auto !important; }
+header { background-position: 72% 38%; }
+header::before { background: linear-gradient(90deg, rgba(3,10,22,.94) 0%, rgba(3,10,22,.75) 28%, rgba(3,10,22,.10) 58%, rgba(3,10,22,0) 100%), linear-gradient(180deg, rgba(3,10,22,0) 60%, rgba(3,10,22,.7) 100%); }
+.tiempo { background: linear-gradient(180deg, rgba(10,30,52,.94) 0%, rgba(8,24,44,.86) 52%, rgba(8,24,44,.05) 74%, rgba(8,24,44,0) 100%), url('assets/glaciar_franja.jpg') 50% 96% / 125% auto no-repeat, #081a30; }
